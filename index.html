@@ -87,6 +87,32 @@ header.top { display: flex; align-items: center; justify-content: space-between;
 .mode .sub { margin-top: 8px; max-width: 280px; }
 .periodline { display: flex; gap: 8px 12px; align-items: center; flex-wrap: wrap; font-size: 0.86rem; color: var(--muted); }
 .periodline b { color: var(--ink); font-weight: 600; }
+/* earnings */
+details.more { border-top: 1px solid var(--rule); padding-top: 10px; }
+details.more summary { cursor: pointer; font-weight: 600; font-size: 0.9rem; color: var(--ai); }
+.autoinc { display: grid; gap: 4px; background: var(--ai-soft); border-radius: 8px; padding: 10px 12px; font-size: 0.9rem; }
+.autoinc div { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.autoinc .btn { justify-self: start; margin-top: 4px; }
+.calc .sub { color: var(--muted); font-size: 0.8rem; font-weight: 400; display: block; }
+.calc div > span:first-child { min-width: 0; }
+.cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; margin-top: 6px; }
+.cal .wd { font-size: 0.7rem; text-align: center; color: var(--muted); font-weight: 600; padding: 2px 0 4px; }
+.cal .day { min-height: 3.1rem; border: 1px solid var(--rule); background: var(--sheet); border-radius: 8px; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 5px 2px; cursor: pointer; color: var(--ink); min-width: 0; font: inherit; }
+.cal .day.we { background: var(--paper); }
+.cal .day .n { font-size: 0.85rem; font-weight: 500; line-height: 1.1; }
+.cal .day .h { font-size: 0.68rem; background: var(--ai); color: var(--on-ai); border-radius: 4px; padding: 1px 4px; max-width: 100%; overflow: hidden; white-space: nowrap; }
+.cal .day.hol .h { background: var(--c-want); }
+.cal .day.today .n { color: var(--ai); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+.cal .day.sel { outline: 2px solid var(--ai); outline-offset: -1px; background: var(--ai-soft); }
+.daypanel { display: grid; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--rule); }
+.daypanel h3 { font-family: var(--display); font-size: 1.1rem; }
+.daystate { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.otitem { display: grid; grid-template-columns: 3rem minmax(0, 1fr) auto 32px; gap: 10px; align-items: center; padding: 7px 0; border-bottom: 1px dashed var(--rule); }
+.otitem:last-child { border-bottom: 0; }
+.otitem .d { font-size: 0.8rem; color: var(--muted); }
+.otitem small { display: block; color: var(--muted); font-size: 0.75rem; }
+.otitem .del { border: 0; background: none; color: var(--muted); cursor: pointer; font-size: 1.05rem; border-radius: 6px; height: 30px; }
+.otitem .del:hover { color: var(--hanko); background: var(--ai-soft); }
 .iconbtn { border: 1px solid var(--rule); background: var(--sheet); color: var(--ink); min-width: 36px; height: 36px; border-radius: 8px; font-size: 1.05rem; cursor: pointer; padding: 0 8px; }
 .iconbtn:hover { border-color: var(--ai); color: var(--ai); }
 .iconbtn.today { font-size: 0.8rem; font-weight: 500; }
@@ -281,6 +307,7 @@ tfoot td { font-weight: 600; border-bottom: 0; }
 
   <nav class="tabs" role="tablist" aria-label="Bölümler">
     <button role="tab" aria-selected="true" data-tab="defter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M9 9h6M9 13h6"/></svg>Defter</button>
+    <button role="tab" aria-selected="false" data-tab="kazanc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><ellipse cx="12" cy="6.5" rx="7" ry="2.8"/><path d="M5 6.5v5c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8v-5"/><path d="M5 11.5v5c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8v-5"/></svg>Kazanç</button>
     <button role="tab" aria-selected="false" data-tab="plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Plan</button>
     <button role="tab" aria-selected="false" data-tab="analiz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Analiz</button>
     <button role="tab" aria-selected="false" data-tab="review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M8.5 12.5l2.3 2.3 4.7-5"/></svg>Kapanış</button>
@@ -352,6 +379,76 @@ tfoot td { font-weight: 600; border-bottom: 0; }
     </div>
   </section>
 
+
+  <!-- KAZANC -->
+  <section id="pane-kazanc" class="pane" hidden>
+    <div class="sheet plan">
+      <div><h2>Maaş ve prim</h2><p class="lead" style="margin:0">Net, yani eline geçen tutarları yaz. Bir kere girmen yeter; her ay otomatik hesaplanır.</p></div>
+      <div class="row">
+        <div class="field"><label class="label" for="eSalary" id="eSalaryLabel">Haftalık maaş, net (₺)</label><input id="eSalary" inputmode="decimal" placeholder="0" autocomplete="off"></div>
+        <div class="field"><label class="label" for="eBonus">Aylık prim, net (₺)</label><input id="eBonus" inputmode="decimal" placeholder="Yoksa boş bırak" autocomplete="off"></div>
+      </div>
+      <p class="periodline" id="eSalaryNote" style="margin:0"></p>
+      <div class="field" style="max-width:360px"><label class="label" for="ePay">Kazancın ne zaman yatıyor?</label><select id="ePay"></select></div>
+      <div class="notice" id="eDup" hidden></div>
+      <details class="more" id="eMore">
+        <summary>Mesai ayarları ve hazır süreler</summary>
+        <div class="row" style="margin-top:12px">
+          <div class="field"><label class="label" for="eHours">Haftalık çalışma saati</label><input id="eHours" inputmode="decimal" placeholder="45"></div>
+          <div class="field"><label class="label" for="eOt">Normal mesai katsayısı</label><input id="eOt" inputmode="decimal" placeholder="1,5"></div>
+          <div class="field"><label class="label" for="eHol">Tatil, bayram katsayısı</label><input id="eHol" inputmode="decimal" placeholder="2"></div>
+        </div>
+        <div class="field" id="eTimingWrap" style="max-width:360px;margin-top:10px"><label class="label" for="eTiming">Mesai parası ne zaman yatıyor?</label>
+          <select id="eTiming"><option value="next">Mesaiyi yaptığım ayın ertesi ayında</option><option value="same">Mesaiyi yaptığım ay içinde</option></select></div>
+        <div id="presetBox" style="display:grid;gap:10px;margin-top:16px">
+          <span class="label">Hazır süreler</span>
+          <p class="muted" style="margin:0;font-size:.85rem">Takvimde bir güne dokununca o günün hazır süreleri önce çıkar.</p>
+          <div id="presetList"></div>
+          <div class="row">
+            <div class="field"><label class="label" for="npH">Saat</label><input id="npH" inputmode="numeric" placeholder="2"></div>
+            <div class="field"><label class="label" for="npM">Dakika</label><input id="npM" inputmode="numeric" placeholder="20"></div>
+            <div class="field"><label class="label" for="npKind">Tür</label><select id="npKind"><option value="normal">Normal mesai</option><option value="holiday">Tatil, bayram</option></select></div>
+          </div>
+          <div class="field"><span class="label">Hangi günler?</span><div class="chips" id="npDays"></div></div>
+          <div class="formerr" id="npErr" role="alert"></div>
+          <div class="btns"><button class="btn ghost small" type="button" id="npAdd">Hazır süre ekle</button></div>
+        </div>
+      </details>
+      <div class="calc" id="eRates"></div>
+    </div>
+
+    <div class="sheet">
+      <div class="headrow"><h2 id="otCalTitle">Mesailer</h2><span class="muted num" id="otTotal"></span></div>
+      <div class="cal" id="otCal"></div>
+      <div class="daypanel" id="dayPanel">
+        <div class="headrow" style="margin:0"><h3 id="dayTitle" style="margin:0"></h3></div>
+        <div class="daystate" id="dayState"></div>
+        <div class="chips" id="dayPresets"></div>
+        <details class="more" id="dCustom">
+          <summary>Başka bir süre yaz</summary>
+          <div class="row" style="margin-top:10px">
+            <div class="field"><label class="label" for="dH">Saat</label><input id="dH" inputmode="numeric" placeholder="3" autocomplete="off"></div>
+            <div class="field"><label class="label" for="dM">Dakika</label><input id="dM" inputmode="numeric" placeholder="40" autocomplete="off"></div>
+          </div>
+          <div class="chips" id="dKind" style="margin-top:10px"></div>
+          <div class="btns" style="margin-top:10px"><button class="btn small" type="button" id="dMark">Bu güne işaretle</button><button class="btn ghost small" type="button" id="dSave">Hazır süre yap</button><span class="muted num" id="dPreview"></span></div>
+        </details>
+        <div class="formerr" id="dErr" role="alert"></div>
+      </div>
+    </div>
+
+    <div class="sheet">
+      <h2 id="earnNextTitle">Bu ayın kazancı</h2>
+      <p class="lead" id="earnNextLead"></p>
+      <div class="calc" id="earnNext"></div>
+    </div>
+    <div class="sheet">
+      <h2 id="earnNowTitle">Bu ayın bütçesine giren</h2>
+      <p class="lead" id="earnNowLead"></p>
+      <div class="calc" id="earnNow"></div>
+    </div>
+  </section>
+
   <!-- PLAN -->
   <section id="pane-plan" class="pane" hidden>
     <div class="sheet plan">
@@ -363,6 +460,8 @@ tfoot td { font-weight: 600; border-bottom: 0; }
       <div class="lastnote" id="lastNote" hidden></div>
       <div class="q"><span class="n">1</span><div>
         <p id="q1">Bu dönem ne kadar param var?</p>
+        <div id="autoIncome"></div>
+        <p class="muted" id="otherIncomeLabel" style="margin:10px 0 6px;font-size:.85rem" hidden>Diğer gelirler</p>
         <div class="lines" id="incomeLines"></div>
         <div class="linesum"><button class="btn ghost small" type="button" data-addline="incomeItems">+ Gelir ekle</button><span>Bu ay toplam gelir <b class="num" id="incomeSum"></b></span></div>
         <p style="margin:14px 0 8px;font-weight:500">Sabit giderlerim neler?</p>
@@ -557,8 +656,54 @@ var KK = (function () {
       pauseMin: r2(s.pauseMin !== undefined && s.pauseMin !== null && isFinite(pm) && pm >= 0 ? pm : 500),
       period: { mode: "month", day: mode === "month" ? day : 1, weekday, anchor }, // the budget is always monthly
       pay,
+      earn: normalizeEarn(s.earn),
       periodSet: !!s.periodSet,
     };
+  }
+
+  /* ---- earnings: salary, fixed bonus, overtime ---- */
+  function normalizeEarn(e) {
+    e = e && typeof e === "object" ? e : {};
+    const num = (v, lo, hi, d) => { v = Number(v); return isFinite(v) && v >= lo && v <= hi ? r2(v) : d; };
+    return {
+      salary: num(e.salary, 0, 1e9, 0),        // net, per pay (weekly pay -> weekly amount)
+      bonus: num(e.bonus, 0, 1e9, 0),          // net, fixed every month
+      weeklyHours: num(e.weeklyHours, 1, 100, 45),
+      otRate: num(e.otRate, 1, 5, 1.5),
+      holidayRate: num(e.holidayRate, 1, 5, 2),
+      otTiming: e.otTiming === "same" ? "same" : "next",   // only used when payMode is "weekly"
+      // "monthly": everything earned in a calendar month (salary, bonus, overtime) is paid on payDay of the next month
+      // and counts as income in the budget period that contains that date. "weekly": salary counted in the month itself.
+      payMode: e.payMode === "weekly" ? "weekly" : "monthly",
+      payDay: Number.isInteger(e.payDay) && e.payDay >= 1 && e.payDay <= 28 ? e.payDay : 5,
+      presets: Array.isArray(e.presets) ? cleanPresets(e.presets) : DEFAULT_PRESETS.map((x) => Object.assign({}, x, { days: x.days.slice() })),
+    };
+  }
+  // Ready-made overtime lengths, shown first on the weekdays they belong to (0 = Pazartesi … 6 = Pazar).
+  const DEFAULT_PRESETS = [
+    { id: "p-sali-1", minutes: 140, kind: "normal", days: [1] }, { id: "p-sali-2", minutes: 220, kind: "normal", days: [1] },
+    { id: "p-pazar-1", minutes: 450, kind: "normal", days: [6] }, { id: "p-pazar-2", minutes: 600, kind: "normal", days: [6] },
+  ];
+  function cleanPresets(arr) {
+    return arr.filter((x) => x && typeof x === "object" && Number.isInteger(x.minutes) && x.minutes > 0 && x.minutes <= 1440).slice(0, 30)
+      .map((x) => ({ id: String(x.id || uid()), minutes: x.minutes, kind: x.kind === "holiday" ? "holiday" : "normal",
+        days: Array.isArray(x.days) ? [...new Set(x.days.filter((d) => Number.isInteger(d) && d >= 0 && d <= 6))].sort() : [] }));
+  }
+  function fmtMinutes(min) { const h = Math.floor(min / 60), m = Math.round(min % 60); return h && m ? h + " sa " + m + " dk" : h ? h + " saat" : m + " dk"; }
+  // Net hourly wage from the salary: weekly ÷ weekly hours (45 -> monthly 225 hours, the usual Turkish basis).
+  function hourlyRate(earn, pay) {
+    if (!earn.salary) return 0;
+    if (pay.freq === "week") return earn.salary / earn.weeklyHours;
+    if (pay.freq === "biweek") return earn.salary / (2 * earn.weeklyHours);
+    return earn.salary / (5 * earn.weeklyHours);
+  }
+  const otMultiplier = (earn, kind) => kind === "holiday" ? earn.holidayRate : earn.otRate;
+  function overtimeAmount(earn, pay, hours, kind) { return r2(hourlyRate(earn, pay) * otMultiplier(earn, kind) * hours); }
+  function cleanOvertime(arr, mk) {
+    if (!Array.isArray(arr)) return [];
+    const mins = (o) => Number.isInteger(o.minutes) && o.minutes > 0 ? o.minutes : Math.round((Number(o.hours) || 0) * 60);
+    return arr.filter((o) => o && typeof o === "object" && isISO(o.date) && mins(o) > 0 && mins(o) <= 1440 && (!mk || o.date.slice(0, 7) === mk))
+      .map((o) => ({ id: String(o.id || uid()), date: o.date, minutes: mins(o), hours: r2(mins(o) / 60), kind: o.kind === "holiday" ? "holiday" : "normal", amount: r2(Math.max(0, Number(o.amount) || 0)), note: String(o.note || "").slice(0, 60) }));
   }
 
   /* ---- pay periods ---- */
@@ -649,7 +794,9 @@ var KK = (function () {
   const dailyRate = (x) => FREQ_DAYS[x.freq] ? (Number(x.amount) || 0) / FREQ_DAYS[x.freq] : 0;
   const mult = (x, pay, p) => (!pay || !FREQ_DAYS[x.freq]) ? 1 : p.len / FREQ_DAYS[x.freq];
   const itemTotal = (x, pay, p) => r2((Number(x.amount) || 0) * mult(x, pay, p));
-  const itemsTotal = (items, pay, p) => r2(items.reduce((a, x) => a + (Number(x.amount) || 0) * mult(x, pay, p), 0));
+  // the total is the sum of the rounded lines, so the lines shown on screen always add up to it
+  const itemsTotal = (items, pay, p) => r2(items.reduce((a, x) => a + itemTotal(x, pay, p), 0));
+
   function describePay(pay) {
     if (pay.freq === "week") return "Haftalık, her " + GUNLER_UZUN[pay.weekday];
     if (pay.freq === "biweek") return "2 haftada bir (" + fmtDay(pay.anchor || DEFAULT_ANCHOR, true) + " baz alınarak)";
@@ -670,6 +817,49 @@ var KK = (function () {
     return { v: 3, incomeItems: income, fixedItems: fixed, save: r2(Math.max(0, Number(d.save) || 0)), budgets, intent: String(d.intent || ""),
       review: { well: String(rv.well || ""), regret: String(rv.regret || ""), next: String(rv.next || "") } };
   }
+  const monthOvertime = (docs, mk) => cleanOvertime(docs[mk] && docs[mk].overtime, mk);
+  function overtimeIn(docs, p) { const out = []; monthKeysOf(p).forEach((mk) => monthOvertime(docs, mk).forEach((o) => { if (contains(p, o.date)) out.push(o); })); return out.sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id)); }
+  // Income lines that come from the Kazanç settings for period p (shown read-only in the plan).
+  function payDateFor(settings, mk) {
+    let [y, m] = mk.split("-").map(Number); m++; if (m > 12) { m = 1; y++; }
+    return ymd(y, m, Math.min(settings.earn.payDay, dim(y, m)));
+  }
+  const monthKeyAdd = (mk, n) => { let [y, m] = mk.split("-").map(Number); m += n; while (m > 12) { m -= 12; y++; } while (m < 1) { m += 12; y--; } return y + "-" + pad(m); };
+  // What a calendar month of work earns: daily salary × days in the month, the fixed bonus, and that month's overtime.
+  function monthEarnings(settings, docs, mk) {
+    const e = settings.earn, [y, m] = mk.split("-").map(Number), days = dim(y, m);
+    const cal = { start: mk + "-01", end: ymd(y, m, days), len: days };
+    const salary = e.salary > 0 ? itemTotal({ amount: e.salary, freq: settings.pay.freq }, settings.pay, cal) : 0;
+    const ot = overtimeIn(docs, cal);
+    const otAmount = r2(ot.reduce((a, o) => a + o.amount, 0)), otMinutes = ot.reduce((a, o) => a + o.minutes, 0);
+    return { mk, days, salary, daily: FREQ_DAYS[settings.pay.freq] ? e.salary / FREQ_DAYS[settings.pay.freq] : 0, bonus: e.bonus, ot, otAmount, otMinutes,
+      total: r2(salary + e.bonus + otAmount), payDate: payDateFor(settings, mk) };
+  }
+  // Calendar months of work whose pay day falls inside period p.
+  function paidMonthsIn(settings, p) {
+    const out = [], first = monthKeyAdd(p.start.slice(0, 7), -2), last = p.end.slice(0, 7);
+    for (let mk = first; mk <= last; mk = monthKeyAdd(mk, 1)) if (contains(p, payDateFor(settings, mk))) out.push(mk);
+    return out;
+  }
+  function earnItems(settings, docs, p) {
+    const e = settings.earn, out = [];
+    if (e.payMode === "monthly") {
+      paidMonthsIn(settings, p).forEach((mk) => {
+        const me = monthEarnings(settings, docs, mk), base = { freq: "month", auto: true, work: mk, payDate: me.payDate };
+        if (me.salary > 0) out.push(Object.assign({ id: "_salary:" + mk, kind: "salary", name: "Maaş", amount: me.salary, days: me.days, daily: me.daily }, base));
+        if (me.bonus > 0) out.push(Object.assign({ id: "_bonus:" + mk, kind: "bonus", name: "Prim", amount: me.bonus }, base));
+        if (me.ot.length) out.push(Object.assign({ id: "_ot:" + mk, kind: "ot", name: "Mesai", amount: me.otAmount, minutes: me.otMinutes, hours: r2(me.otMinutes / 60) }, base));
+      });
+      return out;
+    }
+    if (e.salary > 0) out.push({ id: "_salary", kind: "salary", name: "Maaş", amount: e.salary, freq: settings.pay.freq, auto: true });
+    if (e.bonus > 0) out.push({ id: "_bonus", kind: "bonus", name: "Prim", amount: e.bonus, freq: "month", auto: true });
+    const src = e.otTiming === "same" ? p : shiftPeriod(p, -1, settings.period);
+    const ot = overtimeIn(docs, src);
+    if (ot.length) { const min = ot.reduce((a, o) => a + o.minutes, 0); out.push({ id: "_ot", kind: "ot", name: "Mesai", amount: r2(ot.reduce((a, o) => a + o.amount, 0)), freq: "month", auto: true, minutes: min, hours: r2(min / 60), from: src.start }); }
+    return out;
+  }
+  const withEarn = (plan, items) => Object.assign({}, plan, { incomeItems: items.concat(plan.incomeItems) });
   function monthEntries(docs, mk) {
     const raw = docs[mk];
     return { entries: cleanEntries(raw && raw.entries, mk), skipped: cleanEntries(raw && raw.skipped, mk) };
@@ -786,6 +976,7 @@ var KK = (function () {
       if (isMonthKey(k)) {
         const me = monthEntries(src, k);
         docs[k] = hasLegacyPlan(raw) ? Object.assign(normalizePlan(raw), { v: 3, entries: me.entries, skipped: me.skipped }) : { v: 3, entries: me.entries, skipped: me.skipped };
+        const ot = monthOvertime(src, k); if (ot.length) docs[k].overtime = ot;
       } else if (isPlanKey(k) && isISO(k.slice(7))) docs[k] = normalizePlan(raw);
     });
     const months = Object.keys(docs).filter(isMonthKey).sort();
@@ -796,6 +987,7 @@ var KK = (function () {
 
   return { CATS, CAT_IDS, AYLAR, AY_KISA, GUNLER, GUNLER_UZUN, r2, parseTL, toInput, uid, isMonthKey, isPlanKey, isISO, addDays, diffDays, dow, isoDate, ordSuffix,
     normalizeSettings, periodOf, shiftPeriod, contains, monthKeysOf, planKey, fmtDay, rangeShort, periodLabel, periodShort, term, describeCfg,
+    normalizeEarn, cleanPresets, fmtMinutes, payDateFor, monthKeyAdd, monthEarnings, paidMonthsIn, hourlyRate, otMultiplier, overtimeAmount, cleanOvertime, monthOvertime, overtimeIn, earnItems, withEarn,
     FREQS, FREQ_NAMES, FREQ_DAYS, paydays, mult, dailyRate, itemTotal, itemsTotal, describePay,
     blankPlan, normalizePlan, hasLegacyPlan, monthEntries, monthDocOut, sumItems, hasIncome, planFor, view, previousPlan, copyPlan,
     summarize, cumulative, byDow, breakdown, csv, niceMax, parseBackup };
@@ -889,7 +1081,7 @@ if (typeof module !== "undefined") module.exports = KK;
   function setStatus(t, err) { const s = $("status"); s.textContent = t; s.classList.toggle("err", !!err); }
 
   /* ---------- data operations ---------- */
-  function refreshView() { V = KK.view(docs, period); }
+  function refreshView() { V = KK.view(docs, period); V.earn = KK.earnItems(settings, docs, period); }
   function savePlan() { enqueue(KK.planKey(period), clone(V.plan)); }
   function writeMonth(mk, entries, skipped) { enqueue(mk, KK.monthDocOut(docs[mk], entries, skipped)); }
   function putEntry(e) { const mk = e.date.slice(0, 7), me = KK.monthEntries(docs, mk); if (me.entries.some((x) => x.id === e.id)) return; me.entries.push(e); writeMonth(mk, me.entries, me.skipped); }
@@ -941,7 +1133,7 @@ if (typeof module !== "undefined") module.exports = KK;
   }
 
   /* ---------- rendering ---------- */
-  function S() { return KK.summarize(V.plan, V.entries, V.skipped, period, today(), settings.pay); }
+  function S() { return KK.summarize(KK.withEarn(V.plan, V.earn), V.entries, V.skipped, period, today(), settings.pay); }
 
   function renderAll(fill) {
     const t = T();
@@ -960,6 +1152,7 @@ if (typeof module !== "undefined") module.exports = KK;
     renderDefter();
     renderPlan(fill);
     renderReview(fill);
+    renderKazanc(fill);
     if (tab === "analiz") renderAnaliz();
   }
 
@@ -982,7 +1175,11 @@ if (typeof module !== "undefined") module.exports = KK;
     else if (s.hasPlan && s.current && s.perDay > 0) daily = `Günde ${money(s.perDay)} harcayabilirsin` + (s.spent > s.paceTarget ? " · tempo önde" : "");
     $("sDaily").textContent = daily;
     const sp = $("sPay");
-    if (s.payDates.length && s.hasPlan) {
+    if (settings.earn.salary > 0 && settings.earn.payMode === "monthly") {
+      const me = KK.monthEarnings(settings, docs, period.start.slice(0, 7));
+      sp.hidden = false;
+      sp.innerHTML = `<span>${AYLAR[Number(me.mk.slice(5)) - 1]} kazancın <b class="num">${money(me.total)}</b>${me.otMinutes ? " · mesai " + KK.fmtMinutes(me.otMinutes) : ""}</span><span>Ödeme günü ${KK.fmtDay(me.payDate)} ${GUNLER_UZUN[KK.dow(me.payDate)]}</span>`;
+    } else if (s.payDates.length && s.hasPlan) {
       const got = s.payDates.filter((d) => d <= today()).length, next = s.payDates.find((d) => d > today());
       sp.hidden = false;
       sp.innerHTML = `<span>Maaş günleri: ${got}/${s.payDates.length} geçti · yatan <b class="num">${money(s.payReceived)}</b></span><span>${next ? "Sıradaki maaş " + KK.fmtDay(next) + " " + GUNLER_UZUN[KK.dow(next)] : (s.past || got ? "Bu ayın maaşlarının hepsi yattı" : "")}</span>`;
@@ -1016,8 +1213,9 @@ if (typeof module !== "undefined") module.exports = KK;
     if (s.hasPlan) { n.hidden = true; return; }
     n.hidden = false;
     const pp = KK.previousPlan(docs, period, cfg());
-    const nudge = !settings.periodSet ? `<span>Maaşın haftalık yatıyorsa önce Ayarlar'dan maaş düzenini seç.</span>` : (settings.pay.freq !== "month" ? `<span>Haftalık maaşını bir kez gir; uygulama günlüğe çevirip ${period.len} günle çarpar.</span>` : "");
-    n.innerHTML = `<span>${cap(t.loc)} için henüz plan yok. Gelirini ve birikim hedefini gir, harcanabilir tutarın hesaplansın.</span>${nudge}<span class="btns">${pp ? `<button class="btn small" data-act="copyprev">${pp.exact ? t.prevGen + " planını kopyala" : "Son planı kopyala"}</button>` : ""}<button class="btn ghost small" data-goto="plan">Plana git</button>${!settings.periodSet ? '<button class="btn ghost small" data-goto="ayarlar">Maaş düzeni</button>' : ""}</span>`;
+    const noSalary = !settings.earn.salary;
+    const nudge = noSalary ? `<span>Maaşını ve primini Kazanç sekmesine bir kez yaz; gelirin her ay otomatik hesaplanır.</span>` : "";
+    n.innerHTML = `<span>${cap(t.loc)} için henüz plan yok. Gelirini ve birikim hedefini gir, harcanabilir tutarın hesaplansın.</span>${nudge}<span class="btns">${noSalary ? '<button class="btn small" data-goto="kazanc">Maaşını yaz</button>' : ""}${pp ? `<button class="btn ${noSalary ? "ghost " : ""}small" data-act="copyprev">${pp.exact ? t.prevGen + " planını kopyala" : "Son planı kopyala"}</button>` : ""}<button class="btn ghost small" data-goto="plan">Plana git</button></span>`;
   }
 
   function renderList() {
@@ -1055,7 +1253,7 @@ if (typeof module !== "undefined") module.exports = KK;
     return `<div class="line" data-list="${list}" data-id="${esc(x.id)}"><input aria-label="Ad" data-k="name" value="${esc(x.name)}" placeholder="${list === "incomeItems" ? "Örn. Maaş" : "Örn. Kira"}" maxlength="60"><input aria-label="${x.freq === "month" ? "Aylık tutar" : "Her seferinde tutar"}" data-k="amount" inputmode="decimal" value="${KK.toInput(x.amount)}" placeholder="${x.freq === "month" ? "Aylık tutar" : "Her seferinde"}"><select data-k="freq" aria-label="Sıklık">${KK.FREQS.map((f) => `<option value="${f}"${f === x.freq ? " selected" : ""}>${KK.FREQ_NAMES[f]}</option>`).join("")}</select><button type="button" class="x" data-rmline aria-label="Satırı sil">×</button><span class="linehint">${lineHint(x)}</span></div>`;
   }
   function renderLines() {
-    $("incomeLines").innerHTML = V.plan.incomeItems.map((x) => lineHtml("incomeItems", x)).join("") || `<p class="muted" style="margin:0;font-size:.85rem">${settings.pay.freq === "month" ? "Henüz gelir yok." : "Henüz gelir yok. Maaşını ekle; sıklığı " + KK.FREQ_NAMES[settings.pay.freq].toLocaleLowerCase("tr") + " olarak gelir."}</p>`;
+    $("incomeLines").innerHTML = V.plan.incomeItems.map((x) => lineHtml("incomeItems", x)).join("") || `<p class="muted" style="margin:0;font-size:.85rem">${settings.earn.salary ? "Kira geliri, yan iş gibi başka bir gelirin varsa buraya ekle." : "Maaşını Kazanç sekmesine yazabilir ya da burada elle gelir ekleyebilirsin."}</p>`;
     $("fixedLines").innerHTML = V.plan.fixedItems.map((x) => lineHtml("fixedItems", x)).join("") || '<p class="muted" style="margin:0;font-size:.85rem">Kira, faturalar, internet, abonelikler, kredi taksitleri…</p>';
   }
   function renderPlan(fill) {
@@ -1069,6 +1267,7 @@ if (typeof module !== "undefined") module.exports = KK;
     renderPlanHelpers();
   }
   function renderPlanComputed() {
+    renderAutoIncome();
     const s = S();
     $("incomeSum").textContent = money(s.income);
     $("fixedSum").textContent = money(s.fixed);
@@ -1088,7 +1287,7 @@ if (typeof module !== "undefined") module.exports = KK;
     const note = pp && pp.exact && pp.plan.review.next.trim();
     $("lastNote").hidden = !note;
     if (note) $("lastNote").innerHTML = `<b>Geçen ay kendine notun:</b> ${esc(note)}`;
-    $("periodLine").innerHTML = `Dönem <b>${KK.periodLabel(period)}</b> (${period.len} gün) · Maaş: ${esc(KK.describePay(settings.pay))}`;
+    $("periodLine").innerHTML = `Dönem <b>${KK.periodLabel(period)}</b> (${period.len} gün) · Maaş: ${settings.earn.salary && settings.earn.payMode === "monthly" ? KK.FREQ_NAMES[settings.pay.freq].toLocaleLowerCase("tr") + " tutar, ödeme ertesi ayın " + settings.earn.payDay + "'" + dayLoc(settings.earn.payDay) : esc(KK.describePay(settings.pay))}`;
   }
 
   /* review */
@@ -1175,9 +1374,9 @@ if (typeof module !== "undefined") module.exports = KK;
   function renderHistory() {
     const rows = [];
     for (let i = 5; i >= 0; i--) {
-      const p = KK.shiftPeriod(period, -i, cfg()), v = i === 0 ? V : KK.view(docs, p);
-      const has = v.entries.length || v.source;
-      rows.push({ p, s: has ? KK.summarize(v.plan, v.entries, v.skipped, p, today(), settings.pay) : null });
+      const p = KK.shiftPeriod(period, -i, cfg()), v = i === 0 ? V : KK.view(docs, p), ei = i === 0 ? V.earn : KK.earnItems(settings, docs, p);
+      const has = v.entries.length || v.source || (i === 0 && ei.length) || ei.some((x) => x.kind === "ot");
+      rows.push({ p, s: has ? KK.summarize(KK.withEarn(v.plan, ei), v.entries, v.skipped, p, today(), settings.pay) : null });
     }
     const max = Math.max(1, ...rows.map((r) => r.s ? Math.max(r.s.spent, r.s.spendable) : 0));
     $("history").innerHTML = `<div class="cols">${rows.map((r) => `<div class="col${r.p.start === period.start ? " cur" : ""}"><div class="well">${r.s ? `<span class="v num">${r.s.spent ? fmtC.format(r.s.spent) : ""}</span><i style="height:${(r.s.spent / max) * 85}%"></i>${r.s.spendable > 0 ? `<b style="bottom:calc(${(r.s.spendable / max) * 85}% - 1px)"></b>` : ""}` : ""}</div></div>`).join("")}</div><div class="collabels">${rows.map((r) => `<span>${KK.periodShort(r.p)}</span>`).join("")}</div>` +
@@ -1270,7 +1469,7 @@ if (typeof module !== "undefined") module.exports = KK;
   });
 
   /* ---------- plan events ---------- */
-  function planChanged() { savePlan(); renderPlanComputed(); renderDefter(); renderReview(false); }
+  function planChanged() { savePlan(); renderPlanComputed(); renderDefter(); renderReview(false); renderKazanc(false); }
   function doCopyPrev() {
     const pp = KK.previousPlan(docs, period, cfg()); if (!pp || !loaded) return;
     V.plan = Object.assign(KK.copyPlan(pp.plan), { intent: V.plan.intent, review: V.plan.review });
@@ -1315,6 +1514,216 @@ if (typeof module !== "undefined") module.exports = KK;
   };
   [["rWell", "well"], ["rRegret", "regret"], ["rNext", "next"]].forEach(([id, k]) => $(id).addEventListener("input", (ev) => { if (!loaded) return; V.plan.review[k] = ev.target.value; savePlan(); }));
 
+  /* ---------- earnings (Kazanç) ---------- */
+  // "5" -> "inde", "6" -> "sında": Turkish locative after the possessive day suffix
+  const dayLoc = (d) => { const s = KK.ordSuffix(d); return s + (/[ıu]$/.test(s) ? "nda" : "nde"); };
+  $("ePay").innerHTML = Array.from({ length: 28 }, (_, i) => i + 1).map((d) => `<option value="m${d}">Ertesi ayın ${d}'${dayLoc(d)}, o ayın tamamı</option>`).join("") + `<option value="weekly">Maaşım her hafta yatıyor</option>`;
+  const E = () => settings.earn;
+  const monthly = () => E().payMode === "monthly";
+  const numFmt = (n) => (Math.round(n * 100) / 100).toLocaleString("tr-TR");
+  const fmtMin = (m) => KK.fmtMinutes(m);
+  const hm = (m) => Math.floor(m / 60) + ":" + String(Math.round(m % 60)).padStart(2, "0");
+  const monthName = (mk) => AYLAR[Number(mk.slice(5, 7)) - 1];
+  const longDay = (iso) => Number(iso.slice(8)) + " " + AYLAR[Number(iso.slice(5, 7)) - 1] + " " + iso.slice(0, 4);
+  const workMonth = () => period.start.slice(0, 7);             // the calendar month shown in the overtime calendar
+  const kindName = (k) => k === "holiday" ? "tatil, bayram mesaisi" : "mesai";
+  let selDay = null, newPresetDays = [], dKind = "normal";
+  const hoursBasis = () => { const e = E(), f = settings.pay.freq; return f === "week" ? e.weeklyHours : f === "biweek" ? 2 * e.weeklyHours : 5 * e.weeklyHours; };
+  const dupLines = () => E().salary > 0 ? V.plan.incomeItems.filter((x) => /maa[şs]|ücret|ucret|yevmiye|haftal[ıi]k/i.test(x.name)) : [];
+  function itemSub(it) {
+    if (it.kind === "salary") return it.work ? (it.daily ? `${monthName(it.work)} emeği · günde ${money(it.daily)} × ${it.days} gün` : `${monthName(it.work)} maaşı`) : (it.freq === "month" ? "aylık net" : `günde ${money(KK.dailyRate(it))} × ${period.len} gün`);
+    if (it.kind === "bonus") return it.work ? `${monthName(it.work)} primi` : "her ay sabit";
+    if (it.kind === "ot") return `${it.work ? monthName(it.work) : KK.periodLabel(KK.periodOf(it.from, cfg()))} mesaisi: ${fmtMin(it.minutes)}`;
+    return "";
+  }
+  function earnRows(items, others, p) {
+    let html = "", total = 0;
+    items.forEach((it) => { const v = KK.itemTotal(it, settings.pay, p); total += v; const sub = itemSub(it); html += `<div><span>${it.name}${sub ? `<span class="sub">${sub}</span>` : ""}</span><span class="num">${money(v)}</span></div>`; });
+    others.forEach((it) => { const v = KK.itemTotal(it, settings.pay, p); total += v; html += `<div><span>${esc(it.name || "Gelir")}<span class="sub">Plan'daki diğer gelir</span></span><span class="num">${money(v)}</span></div>`; });
+    html += `<div class="tot"><span>= Toplam gelir</span><span class="num">${money(total)}</span></div>`;
+    return { html, total: KK.r2(total) };
+  }
+  function renderAutoIncome() {
+    const items = V.earn, box = $("autoIncome"), dup = dupLines();
+    $("otherIncomeLabel").hidden = !items.length;
+    if (!items.length) {
+      box.innerHTML = `<div class="autoinc"><div><span>${E().salary ? "Bu ay ödeme günü olan bir kazanç yok." : "Maaşını ve primini Kazanç sekmesine bir kez yaz, her ay buraya otomatik gelsin."}</span></div><button class="btn small" type="button" data-goto="kazanc">Kazanç'a git</button></div>`;
+      return;
+    }
+    const pd = items[0].payDate;
+    box.innerHTML = `<div class="autoinc">${pd ? `<div class="muted" style="font-size:.82rem"><span>${monthName(items[0].work)} kazancın, ödeme günü ${longDay(pd)}</span></div>` : ""}` +
+      items.map((it) => `<div><span>${it.name}${it.kind === "ot" ? ` <span class="muted">(${fmtMin(it.minutes)})</span>` : ""}</span><span class="num">${money(KK.itemTotal(it, settings.pay, period))}</span></div>`).join("") +
+      (dup.length ? `<div class="over" style="font-size:.85rem"><span>Aşağıda ayrıca "${esc(dup[0].name)}" satırı var; maaşın iki kez sayılıyor. Satırı × ile sil.</span></div>` : "") +
+      `<button class="btn ghost small" type="button" data-goto="kazanc">Kazanç'ta düzenle</button></div>`;
+  }
+
+  /* overtime calendar */
+  function setDay(date, rec) {
+    const mk = date.slice(0, 7), list = KK.monthOvertime(docs, mk).filter((o) => o.date !== date);
+    if (rec) list.push(rec);
+    writeOt(mk, list);
+  }
+  function writeOt(mk, list) { const me = KK.monthEntries(docs, mk); enqueue(mk, Object.assign(KK.monthDocOut(docs[mk], me.entries, me.skipped), { overtime: list })); }
+  function markDay(date, minutes, kind) {
+    if (!loaded) return;
+    if (!E().salary) { $("dErr").textContent = "Mesai ücretini hesaplamak için önce yukarıya maaşını yaz."; return; }
+    const prev = KK.monthOvertime(docs, date.slice(0, 7)).filter((o) => o.date === date);
+    const rec = { id: KK.uid(), date, minutes, hours: KK.r2(minutes / 60), kind, amount: KK.overtimeAmount(E(), settings.pay, minutes / 60, kind), note: "" };
+    setDay(date, rec); afterEarnChange();
+    toast(`${KK.fmtDay(date)}: ${fmtMin(minutes)} ${kindName(kind)} · ${money(rec.amount)}`, "Geri al", () => { const mk = date.slice(0, 7); writeOt(mk, KK.monthOvertime(docs, mk).filter((o) => o.date !== date).concat(prev)); afterEarnChange(); });
+  }
+  function clearDay(date) {
+    const prev = KK.monthOvertime(docs, date.slice(0, 7)).filter((o) => o.date === date); if (!prev.length) return;
+    setDay(date, null); afterEarnChange();
+    toast(`${KK.fmtDay(date)} mesaisi silindi`, "Geri al", () => { const mk = date.slice(0, 7); writeOt(mk, KK.monthOvertime(docs, mk).filter((o) => o.date !== date).concat(prev)); afterEarnChange(); });
+  }
+  function renderCalendar() {
+    const mk = workMonth(), [y, m] = mk.split("-").map(Number), days = new Date(Date.UTC(y, m, 0)).getUTCDate(), first = mk + "-01";
+    if (!selDay || selDay.slice(0, 7) !== mk) selDay = today().slice(0, 7) === mk ? today() : first;
+    const ots = KK.monthOvertime(docs, mk), byDay = {};
+    ots.forEach((o) => { (byDay[o.date] = byDay[o.date] || []).push(o); });
+    const totMin = ots.reduce((a, o) => a + o.minutes, 0), totAmt = ots.reduce((a, o) => a + o.amount, 0);
+    $("otCalTitle").textContent = monthName(mk) + " mesaileri";
+    $("otTotal").textContent = ots.length ? `${fmtMin(totMin)} · ${money(totAmt)}` : "";
+    let html = GUNLER.map((g, i) => `<div class="wd${i >= 5 ? " we" : ""}">${g}</div>`).join("");
+    for (let i = 0; i < KK.dow(first); i++) html += `<div></div>`;
+    for (let d = 1; d <= days; d++) {
+      const iso = mk + "-" + String(d).padStart(2, "0"), list = byDay[iso] || [], min = list.reduce((a, o) => a + o.minutes, 0), wd = KK.dow(iso);
+      const cls = ["day", wd >= 5 ? "we" : "", iso === today() ? "today" : "", iso === selDay ? "sel" : "", list.some((o) => o.kind === "holiday") ? "hol" : ""].filter(Boolean).join(" ");
+      html += `<button type="button" class="${cls}" data-day="${iso}" aria-pressed="${iso === selDay}" aria-label="${d} ${monthName(mk)}${min ? ", " + fmtMin(min) + " mesai" : ""}"><span class="n">${d}</span>${min ? `<span class="h num">${hm(min)}</span>` : ""}</button>`;
+    }
+    $("otCal").innerHTML = html;
+    renderDayPanel();
+  }
+  function renderDayPanel() {
+    const date = selDay, wd = KK.dow(date), e = E();
+    const recs = KK.monthOvertime(docs, date.slice(0, 7)).filter((o) => o.date === date);
+    const min = recs.reduce((a, o) => a + o.minutes, 0), amt = recs.reduce((a, o) => a + o.amount, 0);
+    const mine = e.presets.filter((p) => p.days.includes(wd)), other = e.presets.filter((p) => !p.days.includes(wd));
+    const chip = (p) => `<button type="button" class="chip" data-preset="${p.id}" aria-pressed="${recs.length === 1 && recs[0].minutes === p.minutes && recs[0].kind === p.kind}">${fmtMin(p.minutes)}${p.kind === "holiday" ? " · tatil" : ""}</button>`;
+    $("dayTitle").textContent = `${Number(date.slice(8))} ${monthName(date.slice(0, 7))}, ${GUNLER_UZUN[wd]}`;
+    $("dayState").innerHTML = recs.length
+      ? `<span><b>${fmtMin(min)}</b> ${kindName(recs[0].kind)} · <b class="num">${money(amt)}</b></span><button type="button" class="btn danger small" data-dclear>Sil</button>`
+      : `<span class="muted">Bu gün mesai yok.</span>`;
+    $("dayPresets").innerHTML = (mine.length ? mine.map(chip).join("") : `<span class="muted" style="font-size:.85rem">${GUNLER_UZUN[wd]} için hazır süre yok.</span>`) +
+      (other.length ? `<span class="muted" style="font-size:.8rem;flex-basis:100%;margin-top:4px">Diğer hazır süreler</span>` + other.map(chip).join("") : "");
+    $("dKind").innerHTML = [["normal", `Normal (×${numFmt(e.otRate)})`], ["holiday", `Tatil, bayram (×${numFmt(e.holidayRate)})`]].map(([k, l]) => `<button type="button" class="chip" data-dkind="${k}" aria-pressed="${k === dKind}">${l}</button>`).join("");
+    previewCustom();
+  }
+  function customMinutes() {
+    const h = KK.parseTL($("dH").value || "0"), m = KK.parseTL($("dM").value || "0");
+    if (isNaN(h) || isNaN(m) || h < 0 || m < 0 || m >= 60) return NaN;
+    return Math.round(h * 60 + m);
+  }
+  function previewCustom() {
+    const min = customMinutes(), e = E();
+    $("dPreview").textContent = e.salary && min > 0 && min <= 1440 ? `${fmtMin(min)} = ${money(KK.overtimeAmount(e, settings.pay, min / 60, dKind))}` : "";
+  }
+  function renderPresets() {
+    const e = E();
+    $("presetList").innerHTML = e.presets.length ? e.presets.map((p) => `<div class="otitem"><span class="num">${hm(p.minutes)}</span><span>${fmtMin(p.minutes)} ${p.kind === "holiday" ? "tatil mesaisi" : "mesai"}<small>${p.days.length ? p.days.map((d) => GUNLER_UZUN[d]).join(", ") : "Her gün için"}</small></span><span></span><button type="button" class="del" data-prdel="${p.id}" aria-label="Hazır süreyi sil">×</button></div>`).join("") : `<div class="empty">Hazır süre yok.</div>`;
+    $("npDays").innerHTML = GUNLER.map((g, i) => `<button type="button" class="chip" data-npday="${i}" aria-pressed="${newPresetDays.includes(i)}">${g}</button>`).join("");
+  }
+
+  function renderKazanc() {
+    if (!loaded) return;
+    const e = E(), pay = settings.pay, t = T();
+    const setIf = (id, v) => { if (document.activeElement !== $(id)) $(id).value = v; };
+    $("eSalaryLabel").textContent = pay.freq === "week" ? "Haftalık maaş, net (₺)" : pay.freq === "biweek" ? "2 haftalık maaş, net (₺)" : "Aylık maaş, net (₺)";
+    setIf("eSalary", KK.toInput(e.salary)); setIf("eBonus", KK.toInput(e.bonus));
+    setIf("eHours", KK.toInput(e.weeklyHours)); setIf("eOt", KK.toInput(e.otRate)); setIf("eHol", KK.toInput(e.holidayRate));
+    $("ePay").value = monthly() ? "m" + e.payDay : "weekly";
+    $("eTimingWrap").hidden = monthly(); $("eTiming").value = e.otTiming;
+    $("eSalaryNote").innerHTML = `<span>${pay.freq === "month" ? "Aylık" : pay.freq === "week" ? "Haftalık" : "2 haftalık"} tutar olarak yazılır${pay.freq === "month" ? "" : "; ay kaç gün çekiyorsa ona göre hesaplanır"}.</span><button class="btn ghost small" type="button" data-goto="ayarlar">Değiştir</button>`;
+    const h = KK.hourlyRate(e, pay);
+    $("eRates").innerHTML = e.salary
+      ? `<div><span>Saatlik ücretin<span class="sub">${money(e.salary)} ÷ ${numFmt(hoursBasis())} saat</span></span><span class="num">${money(h)}</span></div>` +
+        `<div><span>Normal mesai, saati<span class="sub">× ${numFmt(e.otRate)}</span></span><span class="num">${money(h * e.otRate)}</span></div>` +
+        `<div><span>Tatil, bayram mesaisi, saati<span class="sub">× ${numFmt(e.holidayRate)}</span></span><span class="num">${money(h * e.holidayRate)}</span></div>`
+      : `<div><span>Maaşını yaz; saatlik ücretin ve mesai saat ücretin hesaplansın.</span></div>`;
+    const dup = dupLines();
+    $("eDup").hidden = !dup.length;
+    if (dup.length) $("eDup").innerHTML = `<span>Plan'da "${esc(dup[0].name)}" adlı bir gelir satırı da var. Maaşın artık buradan geldiği için iki kez sayılıyor.</span><span class="btns"><button class="btn small" type="button" data-act="dupfix">Plan'daki satırı sil</button></span>`;
+    renderPresets();
+    renderCalendar();
+
+    // money that this budget period runs on
+    const now = earnRows(V.earn, V.plan.incomeItems, period);
+    $("earnNowTitle").textContent = KK.periodLabel(period) + " bütçesine giren";
+    $("earnNowLead").textContent = monthly() && V.earn.length ? `${monthName(V.earn[0].work)} kazancın, ödeme günü ${longDay(V.earn[0].payDate)}. Bütçen bu tutarla hesaplanıyor.` : "Bütçen bu toplamla hesaplanıyor.";
+    $("earnNow").innerHTML = V.earn.length || V.plan.incomeItems.length ? now.html : `<div><span>${e.salary ? "Bu dönemde ödeme günü olan bir kazanç yok." : "Maaşını yaz, gelirin burada görünsün."}</span></div>`;
+
+    // what this month's work brings next
+    const next = KK.shiftPeriod(period, 1, cfg()), nv = KK.view(docs, next), basePlan = nv.source ? nv.plan : V.plan;
+    const nextItems = KK.earnItems(settings, docs, next);
+    const r = earnRows(nextItems, basePlan.incomeItems, next);
+    const fixedN = KK.itemsTotal(basePlan.fixedItems, pay, next), saveN = basePlan.save;
+    const running = KK.contains(period, today());
+    if (monthly()) {
+      const me = KK.monthEarnings(settings, docs, workMonth());
+      $("earnNextTitle").textContent = `${monthName(workMonth())} kazancın`;
+      $("earnNextLead").textContent = `Ödeme günü ${longDay(me.payDate)}; ${KK.periodLabel(next)} bütçene girer.` + (running ? " Ay bitmedi; mesai ekledikçe artar." : "") + (nv.source ? "" : " Diğer gelir ve giderler bu ayki gibi varsayıldı.");
+    } else {
+      $("earnNextTitle").textContent = KK.periodLabel(next) + " tahmini";
+      $("earnNextLead").textContent = (e.otTiming === "next" && running ? `${cap(t.loc)} mesai ekledikçe bu tutar artar. ` : "") + (nv.source ? "" : "Diğer gelirler ve giderler bu ayki gibi varsayıldı.");
+    }
+    $("earnNext").innerHTML = r.total > 0
+      ? r.html + (fixedN || saveN ? `<div><span>− Sabit giderler</span><span class="num">${money(fixedN)}</span></div><div><span>− Birikim hedefi</span><span class="num">${money(saveN)}</span></div><div class="tot"><span>= ${KK.periodLabel(next)} için harcanabilir</span><span class="num${r.total - fixedN - saveN < 0 ? " over" : ""}">${money(r.total - fixedN - saveN)}</span></div>` : "")
+      : `<div><span>Maaşını yaz, tahmin burada görünsün.</span></div>`;
+  }
+  function afterEarnChange() { refreshView(); renderDefter(); renderPlanComputed(); renderReview(false); renderKazanc(); if (tab === "analiz") renderAnaliz(); }
+  function saveEarn(patch) { if (!loaded) return; settings.earn = KK.normalizeEarn(Object.assign({}, E(), patch)); saveSettings(); afterEarnChange(); }
+  [["eSalary", "salary"], ["eBonus", "bonus"], ["eHours", "weeklyHours"], ["eOt", "otRate"], ["eHol", "holidayRate"]].forEach(([id, k]) => $(id).addEventListener("input", (ev) => {
+    const raw = ev.target.value.trim(), v = KK.parseTL(raw);
+    ev.target.classList.toggle("over", isNaN(v));
+    if (isNaN(v)) return;
+    if (k !== "salary" && k !== "bonus" && (!raw || v <= 0)) return; // keep the old rate until a real number is typed
+    saveEarn({ [k]: v });
+  }));
+  $("ePay").addEventListener("change", (ev) => { const v = ev.target.value; saveEarn(v === "weekly" ? { payMode: "weekly" } : { payMode: "monthly", payDay: Number(v.slice(1)) }); });
+  $("eTiming").addEventListener("change", (ev) => saveEarn({ otTiming: ev.target.value }));
+  $("otCal").addEventListener("click", (ev) => { const b = ev.target.closest("[data-day]"); if (!b) return; selDay = b.dataset.day; $("dErr").textContent = ""; renderCalendar(); });
+  $("dayPanel").addEventListener("click", (ev) => {
+    const p = ev.target.closest("[data-preset]");
+    if (p) { const pr = E().presets.find((x) => x.id === p.dataset.preset); if (pr) markDay(selDay, pr.minutes, pr.kind); return; }
+    if (ev.target.closest("[data-dclear]")) { clearDay(selDay); return; }
+    const k = ev.target.closest("[data-dkind]"); if (k) { dKind = k.dataset.dkind; document.querySelectorAll("#dKind .chip").forEach((x) => x.setAttribute("aria-pressed", x.dataset.dkind === dKind)); previewCustom(); return; }
+    if (ev.target.closest("#dMark")) {
+      const min = customMinutes();
+      if (!(min > 0) || min > 1440) { $("dErr").textContent = "Süreyi saat ve dakika olarak yaz, örneğin 2 saat 20 dk. Dakika 0-59 arası olmalı."; return; }
+      $("dErr").textContent = ""; markDay(selDay, min, dKind); $("dH").value = ""; $("dM").value = "";
+      return;
+    }
+    if (ev.target.closest("#dSave")) {
+      const min = customMinutes();
+      if (!(min > 0) || min > 1440) { $("dErr").textContent = "Önce süreyi yaz."; return; }
+      const wd = KK.dow(selDay);
+      saveEarn({ presets: E().presets.concat([{ id: KK.uid(), minutes: min, kind: dKind, days: [wd] }]) });
+      toast(`${fmtMin(min)} artık ${GUNLER_UZUN[wd]} için hazır süre`);
+    }
+  });
+  ["dH", "dM"].forEach((id) => $(id).addEventListener("input", previewCustom));
+  $("presetBox").addEventListener("click", (ev) => {
+    const d = ev.target.closest("[data-prdel]");
+    if (d) { const keep = E().presets.filter((x) => x.id !== d.dataset.prdel); saveEarn({ presets: keep }); return; }
+    const nd = ev.target.closest("[data-npday]");
+    if (nd) { const i = Number(nd.dataset.npday); newPresetDays = newPresetDays.includes(i) ? newPresetDays.filter((x) => x !== i) : newPresetDays.concat(i); nd.setAttribute("aria-pressed", newPresetDays.includes(i)); return; }
+    if (ev.target.closest("#npAdd")) {
+      const h = KK.parseTL($("npH").value || "0"), m = KK.parseTL($("npM").value || "0"), min = Math.round(h * 60 + m);
+      if (isNaN(h) || isNaN(m) || m < 0 || m >= 60 || !(min > 0) || min > 1440) { $("npErr").textContent = "Süreyi saat ve dakika olarak yaz; dakika 0-59 arası."; return; }
+      $("npErr").textContent = "";
+      saveEarn({ presets: E().presets.concat([{ id: KK.uid(), minutes: min, kind: $("npKind").value === "holiday" ? "holiday" : "normal", days: newPresetDays.slice().sort() }]) });
+      $("npH").value = ""; $("npM").value = ""; newPresetDays = []; renderPresets();
+      toast(`${fmtMin(min)} hazır sürelere eklendi`);
+    }
+  });
+  $("eDup").addEventListener("click", (ev) => {
+    if (!ev.target.closest("[data-act=dupfix]")) return;
+    const ids = new Set(dupLines().map((x) => x.id)); if (!ids.size) return;
+    V.plan.incomeItems = V.plan.incomeItems.filter((x) => !ids.has(x.id));
+    savePlan(); renderAll(true); toast("Plan'daki maaş satırı silindi. Gelecek aylar bu plandan kopyalanınca da gelmeyecek.");
+  });
+
   /* ---------- settings ---------- */
   $("pDay").innerHTML = Array.from({ length: 31 }, (_, i) => i + 1).map((d) => `<option value="${d}">${d === 1 ? "Ayın 1'i (takvim ayı)" : "Ayın " + d + "'" + KK.ordSuffix(d) + (d >= 29 ? " (kısa aylarda son gün)" : "")}</option>`).join("");
   $("pWeekday").innerHTML = GUNLER_UZUN.map((g, i) => `<option value="${i}">Her ${g}</option>`).join("");
@@ -1337,8 +1746,8 @@ if (typeof module !== "undefined") module.exports = KK;
     const cur = KK.periodOf(today(), pc);
     $("periodPreview").innerHTML = `Şu anki ay: <b>${KK.periodLabel(cur)}</b> (${cur.len} gün)`;
     backupInfo();
-    $("payPreview").innerHTML = pay.freq === "month" ? "Gelirini Plan sekmesinde aylık tutar olarak gir."
-      : `<span>Plan sekmesinde maaş satırının sıklığını <b>${KK.FREQ_NAMES[pay.freq]}</b> seç ve tek seferde yatan tutarı yaz. Örnek: ${pay.freq === "week" ? "haftalık" : "2 haftada bir"} 10.000 ₺, <b>${KK.periodLabel(cur)}</b> (${cur.len} gün) için ${money(KK.itemTotal({ amount: 10000, freq: pay.freq }, pay, cur))} eder. ${esc(cap(payDatesText(cur)))}.</span>`;
+    $("payPreview").innerHTML = settings.earn.payMode === "monthly" ? `<span>${KK.FREQ_NAMES[pay.freq]} tutar olarak yazdığın maaşın ay kaç gün çekiyorsa ona göre hesaplanır. Kazancının ertesi ayın ${settings.earn.payDay}'${dayLoc(settings.earn.payDay)} toplu yattığını Kazanç sekmesinde ayarladın.</span>` : pay.freq === "month" ? "Maaşını Kazanç sekmesine aylık net tutar olarak yaz."
+      : `<span>Maaşını Kazanç sekmesine ${pay.freq === "week" ? "haftalık" : "2 haftalık"} net tutar olarak yaz. Örnek: ${pay.freq === "week" ? "haftalık" : "2 haftada bir"} 10.000 ₺, <b>${KK.periodLabel(cur)}</b> (${cur.len} gün) için ${money(KK.itemTotal({ amount: 10000, freq: pay.freq }, pay, cur))} eder. ${esc(cap(payDatesText(cur)))}.</span>`;
     $("setPause").checked = settings.pauseOn;
     if (document.activeElement !== $("setPauseMin")) $("setPauseMin").value = KK.toInput(settings.pauseMin) || "0";
   }
@@ -1351,9 +1760,7 @@ if (typeof module !== "undefined") module.exports = KK;
     saveSettings(); fillSettings();
     if (JSON.stringify(settings.pay) === before) return;
     refreshView(); renderAll(true);
-    const hasLine = V.plan.incomeItems.some((x) => x.freq === settings.pay.freq);
-    if (settings.pay.freq !== "month" && !hasLine) toast(`Maaş düzeni: ${KK.describePay(settings.pay)}. Şimdi Plan'da maaş satırını ${KK.FREQ_NAMES[settings.pay.freq].toLocaleLowerCase("tr")} yap.`, "Plana git", () => { showTab("plan"); window.scrollTo({ top: 0 }); });
-    else toast(`Maaş düzeni: ${KK.describePay(settings.pay)}`);
+    toast(`Maaş düzeni: ${KK.describePay(settings.pay)}`);
   }
   document.querySelectorAll("input[name=payfreq]").forEach((r) => r.addEventListener("change", () => {
     if (!r.checked) return;
@@ -1462,8 +1869,9 @@ if (typeof module !== "undefined") module.exports = KK;
     if (!loaded) return;
     KK.monthKeysOf(period).forEach((mk) => {
       const me = KK.monthEntries(docs, mk);
-      const keep = (e) => !KK.contains(period, e.date);
-      if (me.entries.some((e) => !keep(e)) || me.skipped.some((e) => !keep(e))) writeMonth(mk, me.entries.filter(keep), me.skipped.filter(keep));
+      const keep = (e) => !KK.contains(period, e.date), ot = KK.monthOvertime(docs, mk);
+      if (me.entries.some((e) => !keep(e)) || me.skipped.some((e) => !keep(e)) || ot.some((o) => !keep(o)))
+        enqueue(mk, Object.assign(KK.monthDocOut(docs[mk], me.entries.filter(keep), me.skipped.filter(keep)), { overtime: ot.filter(keep) }));
     });
     V.plan = KK.blankPlan(); savePlan();
     resetForm(); refreshView(); renderAll(true);
